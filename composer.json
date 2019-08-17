@@ -41,6 +41,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "ext-pgsql": "*",
+        "sensio/framework-extra-bundle": "^5.4",
         "symfony/console": "~4.3.3",
         "symfony/flex": "^1.3.1",
         "symfony/framework-bundle": "~4.3.3",
