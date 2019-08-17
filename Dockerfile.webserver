@@ -1,0 +1,41 @@
+ARG API_IMAGE=srigi/api
+FROM ${API_IMAGE} as api
+FROM nginx:1.17-alpine
+
+ARG TIMEZONE
+ENV TIMEZONE=$TIMEZONE
+RUN apk add --update --no-cache \
+		bash \
+	&& cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime \
+	&& echo $TIMEZONE > /etc/timezone \
+	&& apk del --purge \
+		tzdata \
+	&& mkdir -p \
+		/var/cache/nginx \
+		/var/run/nginx \
+	&& chown nginx:nginx \
+		/var/cache/nginx \
+		/var/run/nginx \
+	&& chmod ug+w \
+		/var/cache/nginx \
+		/var/run/nginx
+COPY ./.docker/bin/wait-for-it ./.docker/bin/webserver-foreground.sh /usr/local/bin/
+
+WORKDIR /app
+COPY --from=api /app/public/ ./public
+
+ARG WEBSERVER_CONFIG=nginx.conf
+COPY ./.docker/webserver/frontcontroller.template.nginx /etc/nginx/frontcontroller.template.conf
+COPY ./.docker/webserver/$WEBSERVER_CONFIG /etc/nginx/nginx.conf
+
+ARG API_URL_PATH
+ARG BACKEND_HOST=api:9000
+ARG FCGI_READ_TIMEOUT=60s
+ENV API_URL_PATH=$API_URL_PATH \
+	BACKEND_HOST=$BACKEND_HOST \
+	FCGI_READ_TIMEOUT=$FCGI_READ_TIMEOUT
+RUN envsubst '\$API_URL_PATH \$BACKEND_HOST \$FCGI_READ_TIMEOUT' < /etc/nginx/frontcontroller.template.conf > /etc/nginx/frontcontroller.conf \
+	&& chown -R nginx:nginx public
+
+USER nginx
+CMD ["webserver-foreground.sh"]

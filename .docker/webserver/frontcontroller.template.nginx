@@ -1,0 +1,17 @@
+root /app/public;
+
+location = /index.php {
+    include fastcgi_params;
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param PATH_INFO $fastcgi_path_info;
+    fastcgi_param HTTP_X_REQUEST_ID $request_id;
+    fastcgi_pass $BACKEND_HOST;
+    fastcgi_read_timeout $FCGI_READ_TIMEOUT;
+}
+
+location / {
+    rewrite ^$API_URL_PATH/(.*) /$1 break;
+    try_files $uri /index.php$is_args$args;
+}
