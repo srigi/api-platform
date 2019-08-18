@@ -2,6 +2,7 @@
 
 namespace App\Domain\Book;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -11,9 +12,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity()
  */
-class Book
+class Author
 {
-
     /**
      * @ORM\Id()
      * @ORM\Column(type="uuid")
@@ -30,31 +30,19 @@ class Book
      * @Groups({"read", "write"})
      * @var string
      */
-    public $title;
+    public $name;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank()
-     * @Assert\Isbn()
-     * @Groups({"read", "write"})
-     * @var string
+     * @ORM\OneToMany(targetEntity=Book::class, mappedBy="author")
+     * @var Book[]|ArrayCollection
      */
-    public $isbn;
+    public $books;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Author::class, inversedBy="books")
-     * @Assert\NotBlank()
-     * @Groups({"read", "write"})
-     * @var Author
-     */
-    protected $author;
-
-    public function __construct(string $title, string $isbn, Author $author)
+    public function __construct(string $name)
     {
         $this->id = Uuid::uuid4();
-        $this->title = $title;
-        $this->isbn = $isbn;
-        $this->author = $author;
+        $this->name = $name;
+        $this->books = new ArrayCollection();
     }
 
 }

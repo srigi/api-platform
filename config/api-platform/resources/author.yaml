@@ -1,0 +1,19 @@
+App\Domain\Book\Author:
+    properties:
+        books:
+            subresource:
+                resourceClass: App\Domain\Book\Book
+                collection: true
+                max_depth: 1
+
+    subresourceOperations:
+        author_get_books_subresource:
+            method: GET
+            path: /author/{id}/books
+
+    attributes:
+        normalization_context:
+            groups: [read]
+        denormalization_context:
+            api_allow_update: false
+            groups: [write]
