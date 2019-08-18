@@ -8,4 +8,4 @@ api_platform:
         html:
             mime_types: ['text/html']
     mapping:
-        paths: ['%kernel.project_dir%/src/Domain']
+        paths: ['%kernel.project_dir%/config/api-platform/resources']

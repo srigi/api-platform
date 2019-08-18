@@ -3,23 +3,8 @@
 namespace App\Domain\Book;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ApiResource(
- *      collectionOperations={
- *          "get"={
- *              "method"="GET",
- *              "controller"="App\Domain\Book\GetAllController"
- *          },
- *          "post"={
- *              "method"="POST",
- *              "controller"="App\Domain\Book\PostController"
- *          },
- *      },
- * )
- */
 class Book
 {
 

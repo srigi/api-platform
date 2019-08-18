@@ -1,0 +1,8 @@
+App\Domain\Book\Book:
+    collectionOperations:
+        get:
+            method: GET
+            controller: App\Domain\Book\GetAllController
+        post:
+            method: POST
+            controller: App\Domain\Book\PostController
