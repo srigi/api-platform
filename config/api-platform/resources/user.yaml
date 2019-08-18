@@ -1,0 +1,28 @@
+App\Domain\Auth\User\User:
+    shortName: Auth\User
+    itemOperations:
+        profile:
+            route_name: !php/const App\Domain\Auth\User\ProfileController::PROFILE_ROUTE_NAME
+            swagger_context:
+                summary: Get basic informations about logged in user
+                parameters: []
+                responses:
+                    200:
+                        description: Receives basic informations about signed-in user
+                        schema:
+                            type: object
+                            properties:
+                                username: { type: string }
+                                lastLoginTime: { type: string  }
+                            required:
+                                - username
+                                - lastLoginTime
+
+    collectionOperations: []
+
+    attributes:
+        normalization_context:
+            groups: [read]
+        denormalization_context:
+            api_allow_update: false
+            groups: [write]
