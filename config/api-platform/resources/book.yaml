@@ -6,3 +6,10 @@ App\Domain\Book\Book:
         post:
             method: POST
             controller: App\Domain\Book\PostController
+
+    attributes:
+        normalization_context:
+            groups: [read]
+        denormalization_context:
+            api_allow_update: false
+            groups: [write]
