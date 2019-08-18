@@ -4,6 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    # defaults (for development, override for production via ENV vars!)
+    env(DATABASE_HOST): database
+    env(DATABASE_PASSWORD): secret
 
 services:
     # default configuration for services in *this* file
