@@ -1,6 +1,13 @@
-version: '2'
+version: '3'
 
 services:
+  adminer:
+    image: adminer
+    ports:
+      - 7999:8080
+    volumes:
+      - adminer:/tmp
+
   api:
     image: srigi/api
     build:
@@ -20,6 +27,23 @@ services:
       - ./public:/app/public
       - ./src:/app/src
       - ./var:/app/var
+
+  migrations:
+    image: srigi/api
+    env_file:
+      - .env
+    depends_on:
+      - database
+    volumes:
+      - ./.docker/php-dev.ini:/usr/local/etc/php/php.ini:ro
+      - ./config:/app/config
+      - ./migrations:/app/migrations
+      - ./src:/app/src
+      - ./var:/app/var
+    deploy:
+      restart_policy:
+        condition: on-failure
+    command: 'wait-for-it -t 30 database:5432 -- bin/console doctrine:migrations:migrate --ansi --no-interaction'
 
   database:
     image: postgres:11-alpine
@@ -46,4 +70,5 @@ services:
       - ./public:/app/public
 
 volumes:
+  adminer:
   database:
