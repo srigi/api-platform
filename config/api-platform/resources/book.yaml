@@ -9,6 +9,43 @@ App\Domain\Book\Book:
             path: /books
             method: POST
             controller: App\Domain\Book\PostController
+            swagger_context:
+                summary: Creates a Domain\Book\Book resource.
+                parameters:
+                    -   in: body
+                        name: Book
+                        description: The new Book resource
+                        schema:
+                            type: object
+                            properties:
+                                title: { type: string }
+                                isbn:
+                                    type: string
+                                    name: ISBN-10 or ISBN-13 identifier
+                            required:
+                                - title
+                                - isbn
+                responses:
+                    201:
+                        description: Book resource created
+                        schema:
+                            type: object
+                            properties:
+                                title: { type: string }
+                                isbn: { type: string }
+                            required:
+                                - title
+                                - isbn
+                    403:
+                        description: Posting the same Book again yields error
+                        schema:
+                            type: object
+                            properties:
+                                error: { type: string }
+                                message: { type: string }
+                            example:
+                                error: Duplicate entry
+                                message: 'You cannot POST the same Book again!'
 
     itemOperations:
         get:
