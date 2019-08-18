@@ -2,22 +2,30 @@
 
 namespace App\Domain\Book;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
+use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+/**
+ * @ORM\Entity()
+ */
 class Book
 {
 
     /**
-     * @ApiProperty(identifier=true)
+     * @ORM\Id()
+     * @ORM\Column(type="uuid")
      * @Assert\NotBlank()
+     * @Assert\Uuid()
      * @Groups({"read"})
-     * @var int
+     * @var UuidInterface
      */
     public $id;
 
     /**
+     * @ORM\Column(type="string")
      * @Assert\NotBlank()
      * @Groups({"read", "write"})
      * @var string
@@ -25,6 +33,7 @@ class Book
     public $title;
 
     /**
+     * @ORM\Column(type="string")
      * @Assert\NotBlank()
      * @Assert\Isbn()
      * @Groups({"read", "write"})
@@ -34,7 +43,7 @@ class Book
 
     public function __construct(string $title, string $isbn)
     {
-        $this->id = random_int(1, 1000);
+        $this->id = Uuid::uuid4();
         $this->title = $title;
         $this->isbn = $isbn;
     }

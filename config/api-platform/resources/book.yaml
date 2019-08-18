@@ -4,11 +4,9 @@ App\Domain\Book\Book:
         get:
             path: /books
             method: GET
-            controller: App\Domain\Book\GetAllController
         post:
             path: /books
             method: POST
-            controller: App\Domain\Book\PostController
             swagger_context:
                 summary: Creates a Domain\Book\Book resource.
                 parameters:
