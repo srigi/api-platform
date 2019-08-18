@@ -14,6 +14,7 @@ RUN ln -sf "/usr/share/zoneinfo/$TIMEZONE" /etc/localtime \
 	&& docker-php-ext-install \
 		intl \
 		pgsql \
+		pdo_pgsql \
 		zip \
 	&& docker-php-ext-enable \
 		opcache \
@@ -22,6 +23,7 @@ RUN ln -sf "/usr/share/zoneinfo/$TIMEZONE" /etc/localtime \
 		&& php -r "if (hash_file('SHA384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer verification failed!'; } echo PHP_EOL;" \
 		&& php composer-setup.php --filename=composer --install-dir=/usr/local/bin \
 		&& php -r "unlink('composer-setup.php');"
+COPY ./.docker/bin/wait-for-it /usr/local/bin/
 COPY ./.docker/php.ini /usr/local/etc/php/
 
 ARG IS_PROD_BUILD=true
@@ -61,6 +63,4 @@ COPY ./migrations ./migrations/
 COPY ./public ./public/
 COPY ./src ./src/
 COPY ./tests ./tests/
-RUN composer dump-autoload --optimize \
-	&& composer run-script auto-scripts \
-	&& composer clearcache
+RUN composer dump-autoload --optimize
