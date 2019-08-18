@@ -1,11 +1,25 @@
 App\Domain\Book\Book:
+    shortName: Domain\Book\Book
     collectionOperations:
         get:
+            path: /books
             method: GET
             controller: App\Domain\Book\GetAllController
         post:
+            path: /books
             method: POST
             controller: App\Domain\Book\PostController
+
+    itemOperations:
+        get:
+            path: /books/{id}
+            method: GET
+        delete:
+            path: /books/{id}
+            method: DELETE
+        update:
+            path: /books/{id}
+            method: PUT
 
     attributes:
         normalization_context:
