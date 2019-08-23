@@ -1,0 +1,11 @@
+{
+  "name": "api-platform",
+  "scripts": {
+    "start": "mdx-deck index.mdx",
+    "build": "mdx-deck build index.mdx"
+  },
+  "dependencies": {
+    "mdx-deck": "^3.0.9"
+  },
+  "devDependencies": {}
+}

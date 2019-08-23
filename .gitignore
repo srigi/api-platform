@@ -23,6 +23,7 @@ nbproject
 /public/bundles/
 /var/
 /vendor/
+node_modules
 
 ## Files to ignore
 /.env
